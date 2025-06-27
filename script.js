@@ -4,13 +4,14 @@ function getURLParameter(name) {
 }
 
 // Function to submit data to Google Sheets automatically
-function submitForm(participantID, completionCode) {
+function submitForm(assignmentID, responseID, completionCode) {
     var formData = new FormData();
-    formData.append('participantID', participantID);
+    formData.append('assignmentID', assignmentID);
+    formData.append('responseID', responseID);
     formData.append('completionCode', completionCode);
 
     // Google Sheets URL for form submission
-    var googleSheetURL = 'https://script.google.com/macros/s/AKfycbz3S7NOx8U5mh5V2T25J84cyolcgFJYcKbw8mST1k_WaJMzsTch7FH0c8QB-YUs8Jaosw/exec';
+    var googleSheetURL = 'https://script.google.com/macros/s/AKfycbzGar6Xg0iqaEPnwQEIp5SFriJjqXDp7ArnzAZUbdbCTZnGSdFqiGYGFl-oB_8cNiSn/exec';
 
     // Make the API request to Google Sheets
     return fetch(googleSheetURL, {
@@ -28,20 +29,20 @@ function submitForm(participantID, completionCode) {
 
 
 // Extract and store the participant ID and completion token from the URL
-var participantID = getURLParameter('response_id');
-var completionToken = getURLParameter('completion_token');
+var assignmentID = getURLParameter('assignment_id')
+var responseID = getURLParameter('response_id');
 
 // Check if participantID exists and handle the completion code
-if (participantID) {
+if (responseID) {
     var n1 = 97580; // The hard-coded number
-    var completionCode = n1 * participantID;
+    var completionCode = n1 * responseID;
     document.getElementById('completionCode').innerHTML = `Your Completion code is: ${completionCode}`;
 
     // Show the h2 message with instructions
     document.getElementById('completionCodeMessage').style.display = 'block';
 
     // Submit the participantID and completionCode to Google Sheets automatically
-    submitForm(participantID, completionCode);
+    submitForm(assignmentID, responseID, completionCode);
 
     // Display the button after 5 seconds
     setTimeout(() => {
